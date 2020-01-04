@@ -5,17 +5,17 @@
 
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <ng-container>
+      <div fxHide.gt-xs>
         <button mat-icon-button (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-      </ng-container>
+      </div>
 
       <ng-container>
         <a routerLink="/">LOGO</a>
       </ng-container>
 
-      <div fxFlex fxLayout fxLayoutAlign="flex-end">
+      <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
         <ul fxLayout fxLayoutGap="1em" class="navigation-items">
           <li><a routerLink="/login">Login</a></li>
           <li><a routerLink="/login/signup">Signup</a></li>
