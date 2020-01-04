@@ -4,6 +4,7 @@
     (ngSubmit)="onSubmit(f)"
     fxLayout="column"
     fxLayoutAlign="center center"
+    fxLayoutGap="1em"
   >
     <!-- Email Field -->
     <mat-form-field>
@@ -28,7 +29,7 @@
     </mat-form-field>
 
     <!-- Password Field -->
-    <mat-form-field hintLabel="Should be at least 6 characters">
+    <mat-form-field>
       <mat-label>Password</mat-label>
       <input
         type="password"
@@ -58,6 +59,8 @@
       <input
         required
         matInput
+        ngModel
+        name="birthdate"
         [matDatepicker]="picker"
         placeholder="Your Birthdate"
         [max]="latestSignupDateAllowed"
@@ -66,7 +69,19 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
+    <!-- Terms & Agreement -->
+    <mat-checkbox ngModel name="agreement" required color="primary">
+      Agree to Terms & Conditions.
+    </mat-checkbox>
+
     <!-- Submit -->
-    <button type=" submit" mat-raised-button color="primary">Submit</button>
+    <button
+      [disabled]="f.invalid"
+      type=" submit"
+      mat-raised-button
+      color="primary"
+    >
+      Submit
+    </button>
   </form>
 </section>
