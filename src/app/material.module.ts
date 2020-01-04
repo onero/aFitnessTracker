@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatDatepickerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule } from '@angular/material';
 
 
 @NgModule({
@@ -11,7 +11,9 @@ import { MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule } fr
     MatButtonModule,
     MatIconModule,
     MatInputModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class MaterialModule { }

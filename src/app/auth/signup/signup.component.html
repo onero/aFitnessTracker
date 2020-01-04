@@ -5,6 +5,7 @@
     fxLayout="column"
     fxLayoutAlign="center center"
   >
+    <!-- Email Field -->
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input
@@ -25,6 +26,8 @@
         E-mail is invalid
       </mat-error>
     </mat-form-field>
+
+    <!-- Password Field -->
     <mat-form-field hintLabel="Should be at least 6 characters">
       <mat-label>Password</mat-label>
       <input
@@ -47,6 +50,23 @@
         Should be at least 6 characters
       </mat-error>
     </mat-form-field>
+
+    <!-- Date Field -->
+    <mat-form-field
+      hintLabel="You can select the date by clicking the calendar icon."
+    >
+      <input
+        required
+        matInput
+        [matDatepicker]="picker"
+        placeholder="Your Birthdate"
+        [max]="latestSignupDateAllowed"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Submit -->
     <button type=" submit" mat-raised-button color="primary">Submit</button>
   </form>
 </section>
