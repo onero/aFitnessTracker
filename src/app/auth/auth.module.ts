@@ -18,6 +18,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     MaterialModule,
     FormsModule
-  ]
+  ],
+  providers: []
 })
 export class AuthModule { }

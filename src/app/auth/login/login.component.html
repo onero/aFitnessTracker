@@ -1,24 +1,9 @@
 <section class="login-form">
-  <form
-    #f="ngForm"
-    (ngSubmit)="onSubmit(f)"
-    fxLayout="column"
-    fxLayoutAlign="center center"
-    fxLayoutGap="1em"
-  >
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1em">
     <!-- Email Field -->
     <mat-form-field>
       <mat-label>Email</mat-label>
-      <input
-        type="email"
-        matInput
-        placeholder="john@doe.com"
-        ngModel
-        name="email"
-        email
-        required
-        #emailInput="ngModel"
-      />
+      <input type="email" matInput placeholder="john@doe.com" ngModel name="email" email required #emailInput="ngModel" />
       <mat-icon matSuffix>email</mat-icon>
       <mat-error *ngIf="emailInput.hasError('required')">
         E-mail is missing
@@ -31,17 +16,7 @@
     <!-- Password Field -->
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input
-        type="password"
-        matInput
-        placeholder="Your password"
-        ngModel
-        name="password"
-        password
-        required
-        minlength="6"
-        #pwInput="ngModel"
-      />
+      <input type="password" matInput placeholder="Your password" ngModel name="password" password required minlength="6" #pwInput="ngModel" />
       <mat-icon matSuffix>lock</mat-icon>
       <mat-hint align="end">{{ pwInput.value?.length }} / 6</mat-hint>
       <mat-error *ngIf="pwInput.hasError('required')">
@@ -53,12 +28,7 @@
     </mat-form-field>
 
     <!-- Submit -->
-    <button
-      [disabled]="f.invalid"
-      type=" submit"
-      mat-raised-button
-      color="primary"
-    >
+    <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">
       Submit
     </button>
   </form>
