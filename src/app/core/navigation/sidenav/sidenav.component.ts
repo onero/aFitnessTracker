@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from './../../services/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'aft-sidenav',
@@ -22,12 +22,17 @@ export class SidenavComponent implements OnInit, OnDestroy {
     });
   }
 
-  onClose() {
-    this.closeSidenav.emit();
-  }
-
   ngOnDestroy() {
     this.$authenticated.unsubscribe();
+  }
+
+  onLogout() {
+    this.onClose();
+    this.authService.logout();
+  }
+
+  private onClose() {
+    this.closeSidenav.emit();
   }
 
 }

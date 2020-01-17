@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'aft-header',
@@ -28,6 +28,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.$authenticated.unsubscribe();
+  }
+
+  onLogout() {
+    this.authService.logout();
   }
 
 }

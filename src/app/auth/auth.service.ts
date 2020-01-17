@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { AuthData } from '../../auth/auth-data.model';
-import { FitnessUser } from '../../auth/user.model';
+import { AuthData } from './auth-data.model';
+import { FitnessUser } from './user.model';
 
 @Injectable({
   providedIn: 'root'

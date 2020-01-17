@@ -14,7 +14,7 @@
             <li *ngIf="!this.isAuthenticated"><a routerLink="/login">Login</a></li>
             <li *ngIf="!this.isAuthenticated"><a routerLink="/login/signup">Signup</a></li>
             <li *ngIf="this.isAuthenticated"><a routerLink="/training">Training</a></li>
-            <li *ngIf="this.isAuthenticated"><a>Logout</a></li>
+            <li *ngIf="this.isAuthenticated"><a style="cursor: pointer;" (click)="onLogout()">Logout</a></li>
         </ul>
     </div>
 </mat-toolbar>
