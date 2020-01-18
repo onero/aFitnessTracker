@@ -13,14 +13,19 @@ export class TrainingService {
     { id: 'burpees', name: 'Burpees', duration: 60, calories: 8 }
   ];
 
+  private completedExercises: Exercise[] = [];
+
   $exerciseChanged = new Subject<Exercise>();
   private runningExercise: Exercise;
-  private completedExercises: Exercise[] = [];
 
   constructor() { }
 
   get exercises() {
     return this.availableExercises.slice();
+  }
+
+  getCompletedExercises() {
+    return this.completedExercises;
   }
 
   startExercise(selectedId: string) {
@@ -42,7 +47,7 @@ export class TrainingService {
     this.completedExercises.push({
       ...this.runningExercise,
       duration: this.runningExercise.duration * (progress / 100),
-      calories: this.runningExercise.duration * (progress / 100),
+      calories: this.runningExercise.calories * (progress / 100),
       date: new Date(),
       state: 'cancelled'
     });
