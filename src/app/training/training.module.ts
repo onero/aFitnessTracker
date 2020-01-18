@@ -5,7 +5,7 @@ import { CurrentTrainingComponent } from './current-training/current-training.co
 import { NewTrainingComponent } from './new-training/new-training.component';
 import { PastTrainingComponent } from './past-training/past-training.component';
 import { TrainingRoutingModule } from './training-routing.module';
-import { TrainingComponent } from './training.component';
+import { TrainingComponent } from './training/training.component';
 import { TrainingService } from './training.service';
 
 
