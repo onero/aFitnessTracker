@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { CoreModule } from './core/core.module';
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './core/material.module';
 import { StopTrainingComponent } from './training/current-training/stop-training.component';
 
 

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatNativeDateModule, MatProgressSpinnerModule, MatSelectModule, MatSidenavModule, MatTabsModule, MatToolbarModule } from '@angular/material';
 
 
@@ -7,6 +8,7 @@ import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
   declarations: [],
   imports: [],
   exports: [
+    FormsModule,
     FlexLayoutModule,
     MatFormFieldModule,
     MatButtonModule,
