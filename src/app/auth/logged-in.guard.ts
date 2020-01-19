@@ -14,12 +14,7 @@ export class LoggedInGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (!this.authService.isAuthenticated) { return true; }
-
-    console.log('You are already logged in, so let me help you back!');
-
-    this.router.navigateByUrl('/home');
-    return false;
+    return !this.authService.getIsAuthenticated();
   }
 
 }
