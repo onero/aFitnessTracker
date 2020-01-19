@@ -54,7 +54,9 @@ export class TrainingService {
       id: document.id,
       name: document.data().name,
       duration: document.data().duration,
-      calories: document.data().calories
+      calories: document.data().calories,
+      date: document.data().date,
+      state: document.data().state
     };
     return exerciseFromDb;
   }
@@ -69,8 +71,16 @@ export class TrainingService {
     this.$exerciseChanged.next(null);
   }
 
-  getCompletedExercises() {
-    return this.completedExercises;
+  getCompletedExercises(): Observable<Exercise[]> {
+    return this.afs.collection<Exercise>(this.FINISHED_EXERCISES)
+      .snapshotChanges()
+      .pipe(
+        map(documentChangeActions => {
+          return documentChangeActions.map(documentChangeAction => {
+            return this.convertDocumentToExercise(documentChangeAction.payload.doc);
+          });
+        })
+      );
   }
 
   cancelExercise(progress: number) {
