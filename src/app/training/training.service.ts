@@ -9,11 +9,13 @@ import { Exercise } from './exercise.model';
 })
 export class TrainingService {
   private readonly EXERCISE_COLLECTION = 'availableExercises';
+  private readonly FINISHED_EXERCISES = 'finishedExercises';
 
   private completedExercises: Exercise[] = [];
   private runningExercise: Exercise;
 
   $exerciseChanged = new Subject<Exercise>();
+
 
   constructor(private afs: AngularFirestore) {
   }
@@ -58,7 +60,7 @@ export class TrainingService {
   }
 
   completeExercise() {
-    this.completedExercises.push({
+    this.addExercise({
       ...this.runningExercise,
       date: new Date(),
       state: 'completed'
@@ -72,7 +74,7 @@ export class TrainingService {
   }
 
   cancelExercise(progress: number) {
-    this.completedExercises.push({
+    this.addExercise({
       ...this.runningExercise,
       duration: this.runningExercise.duration * (progress / 100),
       calories: this.runningExercise.calories * (progress / 100),
@@ -81,6 +83,10 @@ export class TrainingService {
     });
     this.runningExercise = null;
     this.$exerciseChanged.next(null);
+  }
+
+  private addExercise(exercise: Exercise) {
+    this.afs.collection(this.FINISHED_EXERCISES).add(exercise);
   }
 
   getRunningExercise() {
