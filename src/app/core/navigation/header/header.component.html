@@ -11,10 +11,17 @@
 
     <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
         <ul fxLayout fxLayoutGap="1em" class="navigation-items">
-            <li *ngIf="!this.isAuthenticated"><a routerLink="/login">Login</a></li>
-            <li *ngIf="!this.isAuthenticated"><a routerLink="/login/signup">Signup</a></li>
-            <li *ngIf="this.isAuthenticated"><a routerLink="/training">Training</a></li>
-            <li *ngIf="this.isAuthenticated"><a style="cursor: pointer;" (click)="onLogout()">Logout</a></li>
+            <ng-container *ngIf="this.authService.$authenticated | async; then loggedIn; else notLoggedIn"></ng-container>
+
+            <ng-template #notLoggedIn>
+                <li><a routerLink="/login">Login</a></li>
+                <li><a routerLink="/login/signup">Signup</a></li>
+            </ng-template>
+            
+            <ng-template #loggedIn>
+                <li><a routerLink="/training">Training</a></li>
+                <li><a style="cursor: pointer;" (click)="onLogout()">Logout</a></li>
+            </ng-template>
         </ul>
     </div>
 </mat-toolbar>

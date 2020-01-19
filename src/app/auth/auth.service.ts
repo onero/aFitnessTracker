@@ -1,46 +1,71 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { TrainingService } from './../training/training.service';
 import { AuthData } from './auth-data.model';
-import { FitnessUser } from './user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   $authenticated = new Subject<boolean>();
-  private fitnessUser: FitnessUser;
+  user: any = null;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private afAuth: AngularFireAuth,
+    private trainingService: TrainingService) {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.user = user;
+        localStorage.setItem('user', JSON.stringify(this.user));
+        JSON.parse(localStorage.getItem('user'));
+      } else {
+        this.setUserNotAuthenticated();
+      }
+    });
+  }
+
+  private setUserNotAuthenticated() {
+    localStorage.setItem('user', null);
+    JSON.parse(localStorage.getItem('user'));
+  }
+
+  get isAuthenticated(): boolean {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) { this.$authenticated.next(true); }
+    return user !== null;
+  }
 
   registerUser(authData: AuthData) {
-    this.fitnessUser = {
-      email: authData.email,
-      userId: Math.round(Math.random() * 1337)
-    };
-    this.onAuthenticated();
+    this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password)
+      .then(() => {
+        this.onAuthenticated();
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   login(authData: AuthData) {
-    this.fitnessUser = {
-      email: authData.email,
-      userId: Math.round(Math.random() * 1337)
-    };
-    this.onAuthenticated();
+    this.afAuth.auth.signInWithEmailAndPassword(authData.email, authData.password)
+      .then(() => {
+        this.onAuthenticated();
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   logout() {
-    this.fitnessUser = null;
     this.$authenticated.next(false);
-    this.router.navigateByUrl('7login')
-  }
+    this.trainingService.cancelSubscriptions();
+    this.setUserNotAuthenticated();
+    this.afAuth.auth.signOut();
+    this.router.navigateByUrl('/login');
+    console.log('Goodbye!');
 
-  get user(): FitnessUser {
-    return { ...this.fitnessUser };
-  }
-
-  isAuthenticated() {
-    return this.fitnessUser != null;
   }
 
   private onAuthenticated() {

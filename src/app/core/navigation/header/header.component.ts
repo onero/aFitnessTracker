@@ -1,5 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
 
 @Component({
@@ -7,27 +6,18 @@ import { AuthService } from '../../../auth/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  isAuthenticated = false;
-  private $authenticated: Subscription;
+export class HeaderComponent implements OnInit {
 
   @Output()
   sidenavToggle = new EventEmitter<void>();
 
-  constructor(private authService: AuthService) { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit() {
-    this.$authenticated = this.authService.$authenticated.subscribe(authenticated => {
-      this.isAuthenticated = authenticated;
-    });
   }
 
   onToggleSidenav() {
     this.sidenavToggle.emit();
-  }
-
-  ngOnDestroy() {
-    this.$authenticated.unsubscribe();
   }
 
   onLogout() {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Exercise } from './exercise.model';
 
@@ -11,10 +11,11 @@ export class TrainingService {
   private readonly EXERCISE_COLLECTION = 'availableExercises';
   private readonly FINISHED_EXERCISES = 'finishedExercises';
 
-  private completedExercises: Exercise[] = [];
   private runningExercise: Exercise;
 
   $exerciseChanged = new Subject<Exercise>();
+
+  $subscriptions: Subscription[] = [];
 
 
   constructor(private afs: AngularFirestore) {
@@ -101,5 +102,9 @@ export class TrainingService {
 
   getRunningExercise() {
     return { ...this.runningExercise };
+  }
+
+  cancelSubscriptions() {
+    this.$subscriptions.forEach(sub => sub.unsubscribe());
   }
 }
