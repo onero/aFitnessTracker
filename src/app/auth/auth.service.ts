@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { AppRoutes } from './../core/routes.enum';
 import { TrainingService } from './../training/training.service';
 import { AuthData } from './auth-data.model';
 
@@ -31,14 +32,14 @@ export class AuthService {
   private setUserNotAuthenticated() {
     this.trainingService.cancelSubscriptions();
     this.$authenticated.next(false);
-    this.router.navigate(['/login']);
+    this.router.navigateByUrl(AppRoutes.LOGIN);
     this.isAuthenticated = false;
   }
 
   private setUserAuthenticated() {
     this.isAuthenticated = true;
     this.$authenticated.next(true);
-    this.router.navigate(['/training']);
+    this.router.navigateByUrl(AppRoutes.TRAINING);
   }
 
   getIsAuthenticated(): boolean {

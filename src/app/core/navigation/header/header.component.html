@@ -6,7 +6,7 @@
     </div>
 
     <ng-container>
-        <a routerLink="/home">LOGO</a>
+        <a routerLink="{{ route.HOME }}">LOGO</a>
     </ng-container>
 
     <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
@@ -14,12 +14,12 @@
             <ng-container *ngIf="this.authService.$authenticated | async; then loggedIn; else notLoggedIn"></ng-container>
 
             <ng-template #notLoggedIn>
-                <li><a routerLink="/login">Login</a></li>
-                <li><a routerLink="/login/signup">Signup</a></li>
+                <li><a routerLink="{{ route.LOGIN }}">Login</a></li>
+                <li><a routerLink="{{ route.SIGNUP }}">Signup</a></li>
             </ng-template>
-            
+
             <ng-template #loggedIn>
-                <li><a routerLink="/training">Training</a></li>
+                <li><a routerLink="{{ route.TRAINING }}">Training</a></li>
                 <li><a style="cursor: pointer;" (click)="onLogout()">Logout</a></li>
             </ng-template>
         </ul>

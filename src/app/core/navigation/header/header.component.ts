@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../../auth/auth.service';
+import { AppRoutes } from './../../routes.enum';
 
 @Component({
   selector: 'aft-header',
@@ -22,6 +23,10 @@ export class HeaderComponent implements OnInit {
 
   onLogout() {
     this.authService.logout();
+  }
+
+  get route() {
+    return AppRoutes;
   }
 
 }

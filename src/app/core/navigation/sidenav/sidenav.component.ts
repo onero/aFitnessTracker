@@ -1,3 +1,4 @@
+import { AppRoutes } from './../../routes.enum';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../auth/auth.service';
@@ -33,6 +34,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
   private onClose() {
     this.closeSidenav.emit();
+  }
+
+  get route() {
+    return AppRoutes;
   }
 
 }
