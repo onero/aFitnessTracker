@@ -1,36 +1,60 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Exercise } from './exercise.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrainingService {
-  private availableExercises: Exercise[] = [
-    { id: 'crunches', name: 'Crunches', duration: 30, calories: 8 },
-    { id: 'touch-toes', name: 'Touch Toes', duration: 180, calories: 15 },
-    { id: 'side-lunges', name: 'Side Lunges', duration: 120, calories: 18 },
-    { id: 'burpees', name: 'Burpees', duration: 60, calories: 8 }
-  ];
+  private readonly EXERCISE_COLLECTION = 'availableExercises';
 
   private completedExercises: Exercise[] = [];
-
-  $exerciseChanged = new Subject<Exercise>();
   private runningExercise: Exercise;
 
-  constructor() { }
+  $exerciseChanged = new Subject<Exercise>();
 
-  get exercises() {
-    return this.availableExercises.slice();
+  constructor(private afs: AngularFirestore) {
   }
 
-  getCompletedExercises() {
-    return this.completedExercises;
+  getExercises(): Observable<Exercise[]> {
+    return this.afs.collection<Exercise>(this.EXERCISE_COLLECTION)
+      .snapshotChanges()
+      .pipe(
+        map(documentChangeActions => {
+          return documentChangeActions.map(documentChangeAction => {
+            return this.convertDocumentToExercise(documentChangeAction.payload.doc);
+          });
+        })
+      );
   }
 
   startExercise(selectedId: string) {
-    this.runningExercise = this.availableExercises.find(e => e.id === selectedId);
-    this.$exerciseChanged.next({ ...this.runningExercise });
+    this.afs.collection<Exercise>(this.EXERCISE_COLLECTION).doc(selectedId)
+      .get()
+      .pipe(
+        map(document => {
+          return this.convertDocumentToExercise(document);
+        })
+      )
+      .pipe(
+        map(exercise => {
+          this.runningExercise = exercise;
+          this.$exerciseChanged.next({ ...this.runningExercise });
+        })
+      )
+      .subscribe();
+  }
+
+  private convertDocumentToExercise(document: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>): Exercise {
+    const exerciseFromDb: Exercise = {
+      id: document.id,
+      name: document.data().name,
+      duration: document.data().duration,
+      calories: document.data().calories
+    };
+    return exerciseFromDb;
   }
 
   completeExercise() {
@@ -41,6 +65,10 @@ export class TrainingService {
     });
     this.runningExercise = null;
     this.$exerciseChanged.next(null);
+  }
+
+  getCompletedExercises() {
+    return this.completedExercises;
   }
 
   cancelExercise(progress: number) {
