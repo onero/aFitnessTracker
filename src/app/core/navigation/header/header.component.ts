@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../../auth/providers/auth.service';
+import { AuthAction } from 'src/app/auth/state/auth.actions';
 import { AuthState } from './../../../auth/state/auth.state';
 import { AppRoutes } from './../../routes.enum';
 
@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
 
   @Select(AuthState.isAuthenticated) $isAuthenticated: Observable<boolean>;
 
-  constructor(private authService: AuthService) { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
   }
@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
-    this.authService.logout();
+    this.store.dispatch(new AuthAction.Logout());
   }
 
   get route() {

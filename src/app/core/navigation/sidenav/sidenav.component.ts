@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { AuthAction } from 'src/app/auth/state/auth.actions';
 import { AuthState } from 'src/app/auth/state/auth.state';
-import { AuthService } from '../../../auth/providers/auth.service';
 import { AppRoutes } from './../../routes.enum';
 
 @Component({
@@ -17,11 +17,11 @@ export class SidenavComponent {
 
   @Select(AuthState.isAuthenticated) $isAuthenticated: Observable<boolean>;
 
-  constructor(private authService: AuthService) { }
+  constructor(private store: Store) { }
 
   onLogout() {
     this.onClose();
-    this.authService.logout();
+    this.store.dispatch(new AuthAction.Logout());
   }
 
   private onClose() {

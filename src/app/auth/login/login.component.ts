@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from 'src/app/auth/providers/auth.service';
+import { Store } from '@ngxs/store';
+import { AuthAction } from '../state/auth.actions';
 
 @Component({
   selector: 'aft-login',
@@ -8,16 +9,18 @@ import { AuthService } from 'src/app/auth/providers/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(private authService: AuthService) { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
   }
 
   onSubmit(form: NgForm) {
-    this.authService.login({
-      email: form.value.email,
-      password: form.value.password
-    });
+    this.store.dispatch(new AuthAction.Login(
+      {
+        email: form.value.email,
+        password: form.value.password
+      }
+    ));
   }
 
 }
