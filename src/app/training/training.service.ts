@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Exercise } from './exercise.model';
 
@@ -13,13 +13,9 @@ export class TrainingService {
 
   private runningExercise: Exercise;
 
-  $exerciseChanged = new Subject<Exercise>();
+  exerciseChanged$ = new Subject<Exercise>();
 
-  $subscriptions: Subscription[] = [];
-
-
-  constructor(private afs: AngularFirestore) {
-  }
+  constructor(private afs: AngularFirestore) { }
 
   getExercises(): Observable<Exercise[]> {
     return this.afs.collection<Exercise>(this.EXERCISE_COLLECTION)
@@ -44,7 +40,7 @@ export class TrainingService {
       .pipe(
         map(exercise => {
           this.runningExercise = exercise;
-          this.$exerciseChanged.next({ ...this.runningExercise });
+          this.exerciseChanged$.next({ ...this.runningExercise });
         })
       )
       .subscribe();
@@ -69,7 +65,7 @@ export class TrainingService {
       state: 'completed'
     });
     this.runningExercise = null;
-    this.$exerciseChanged.next(null);
+    this.exerciseChanged$.next(null);
   }
 
   getCompletedExercises(): Observable<Exercise[]> {
@@ -93,7 +89,7 @@ export class TrainingService {
       state: 'cancelled'
     });
     this.runningExercise = null;
-    this.$exerciseChanged.next(null);
+    this.exerciseChanged$.next(null);
   }
 
   private addExercise(exercise: Exercise) {
@@ -102,9 +98,5 @@ export class TrainingService {
 
   getRunningExercise() {
     return { ...this.runningExercise };
-  }
-
-  cancelSubscriptions() {
-    this.$subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

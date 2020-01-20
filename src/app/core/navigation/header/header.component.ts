@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
   @Output()
   sidenavToggle = new EventEmitter<void>();
 
-  @Select(AuthState.isAuthenticated) $isAuthenticated: Observable<boolean>;
+  @Select(AuthState.isAuthenticated) isAuthenticated$: Observable<boolean>;
 
   constructor(private store: Store) { }
 

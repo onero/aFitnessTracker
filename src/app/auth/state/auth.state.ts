@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
 import { AppRoutes } from 'src/app/core/routes.enum';
 import { UiService } from './../../shared/ui.service';
-import { TrainingService } from './../../training/training.service';
 import { AuthAction } from './auth.actions';
 
 export interface AuthStateModel {
@@ -21,7 +20,6 @@ export class AuthState implements NgxsOnInit {
     constructor(
         private afAuth: AngularFireAuth,
         private router: Router,
-        private trainingService: TrainingService,
         private uiService: UiService) { }
 
     @Selector()
@@ -44,9 +42,8 @@ export class AuthState implements NgxsOnInit {
     }
 
     @Action(AuthAction.Login)
-    login(context: StateContext<AuthStateModel>, action: AuthAction.Login) {
-        this.trainingService.cancelSubscriptions();
-        this.afAuth.auth.signInWithEmailAndPassword(action.authdata.email, action.authdata.password)
+    async login(context: StateContext<AuthStateModel>, action: AuthAction.Login) {
+        return this.afAuth.auth.signInWithEmailAndPassword(action.authdata.email, action.authdata.password)
             .then(() => {
                 context.setState({
                     isAuthenticated: true
@@ -59,28 +56,28 @@ export class AuthState implements NgxsOnInit {
     }
 
     @Action(AuthAction.Logout)
-    logout(context: StateContext<AuthStateModel>) {
-        this.afAuth.auth.signOut()
+    async logout(context: StateContext<AuthStateModel>) {
+        this.router.navigateByUrl(AppRoutes.LOGIN);
+        return this.afAuth.auth.signOut()
             .then(() => {
                 context.setState({
                     isAuthenticated: false
                 });
-                this.router.navigateByUrl(AppRoutes.LOGIN);
             });
     }
 
     ngxsOnInit(context: StateContext<AuthStateModel>) {
-        this.afAuth.authState.subscribe(user => {
+        return this.afAuth.authState.subscribe(user => {
             if (user) {
-                context.setState({
+                this.router.navigateByUrl(AppRoutes.TRAINING);
+                return context.setState({
                     isAuthenticated: true
                 });
-                this.router.navigateByUrl(AppRoutes.TRAINING);
             } else {
-                context.setState({
+                this.router.navigateByUrl(AppRoutes.LOGIN);
+                return context.setState({
                     isAuthenticated: false
                 });
-                this.router.navigateByUrl(AppRoutes.LOGIN);
             }
         });
     }

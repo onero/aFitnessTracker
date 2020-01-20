@@ -1,4 +1,4 @@
-<section *ngIf="$exercises | async as exercises" class="new-training" fxLayout fxLayoutAlign="center">
+<section *ngIf="exercises$ | async as exercises" class="new-training" fxLayout fxLayoutAlign="center">
     <form (ngSubmit)="onStartTraining(f.value.exercise)" #f="ngForm" fxFill fxLayoutAlign="center">
         <mat-card fxFlex.lt-sm="100%" fxFlex="40%">
             <mat-card-title fxLayoutAlign="center">Time to start a workout!</mat-card-title>

@@ -11,7 +11,7 @@
 
     <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
         <ul fxLayout fxLayoutGap="1em" class="navigation-items">
-            <ng-container *ngIf="$isAuthenticated | async; then loggedIn; else notLoggedIn"></ng-container>
+            <ng-container *ngIf="isAuthenticated$ | async; then loggedIn; else notLoggedIn"></ng-container>
 
             <ng-template #notLoggedIn>
                 <li><a routerLink="{{ route.LOGIN }}">Login</a></li>
