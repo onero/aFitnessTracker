@@ -1,7 +1,7 @@
-import { AppRoutes } from './../../routes.enum';
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../auth/auth.service';
+import { AppRoutes } from './../../routes.enum';
 
 @Component({
   selector: 'aft-sidenav',
@@ -24,7 +24,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.$authenticated.unsubscribe();
+    if (this.$authenticated) {
+      this.$authenticated.unsubscribe();
+    }
   }
 
   onLogout() {

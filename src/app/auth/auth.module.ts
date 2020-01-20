@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { RouterModule, Routes } from '@angular/router';
-import { MaterialModule } from '../core/material.module';
+import { SharedModule } from './../shared/shared.module';
 import { AuthGuard } from './auth.guard';
 import { LoggedInGuard } from './logged-in.guard';
 import { LoginComponent } from './login/login.component';
@@ -15,9 +15,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [SignupComponent, LoginComponent],
   imports: [
-    CommonModule,
     RouterModule.forChild(routes),
-    MaterialModule,
+    SharedModule,
+    AngularFireAuthModule
   ],
   providers: [AuthGuard]
 })

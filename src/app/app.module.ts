@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,7 +9,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { CoreModule } from './core/core.module';
-import { MaterialModule } from './core/material.module';
+import { SharedModule } from './shared/shared.module';
 import { StopTrainingComponent } from './training/current-training/stop-training.component';
 
 
@@ -23,12 +22,11 @@ import { StopTrainingComponent } from './training/current-training/stop-training
     BrowserModule,
     AppRoutingModule,
     CoreModule,
+    SharedModule,
     AuthModule,
     BrowserAnimationsModule,
-    MaterialModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
