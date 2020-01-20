@@ -1,5 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { AuthService } from '../../../auth/auth.service';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../../auth/providers/auth.service';
+import { AuthState } from './../../../auth/state/auth.state';
 import { AppRoutes } from './../../routes.enum';
 
 @Component({
@@ -12,7 +15,9 @@ export class HeaderComponent implements OnInit {
   @Output()
   sidenavToggle = new EventEmitter<void>();
 
-  constructor(public authService: AuthService) { }
+  @Select(AuthState.isAuthenticated) $isAuthenticated: Observable<boolean>;
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }

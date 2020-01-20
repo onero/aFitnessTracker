@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/auth/providers/auth.service';
 
 @Component({
   selector: 'aft-signup',

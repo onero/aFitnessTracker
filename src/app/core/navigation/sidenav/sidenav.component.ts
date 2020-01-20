@@ -1,6 +1,8 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { AuthService } from '../../../auth/auth.service';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { AuthState } from 'src/app/auth/state/auth.state';
+import { AuthService } from '../../../auth/providers/auth.service';
 import { AppRoutes } from './../../routes.enum';
 
 @Component({
@@ -8,26 +10,14 @@ import { AppRoutes } from './../../routes.enum';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnInit, OnDestroy {
-  isAuthenticated = false;
-  private $authenticated: Subscription;
+export class SidenavComponent {
 
   @Output()
   closeSidenav = new EventEmitter<void>();
 
+  @Select(AuthState.isAuthenticated) $isAuthenticated: Observable<boolean>;
+
   constructor(private authService: AuthService) { }
-
-  ngOnInit() {
-    this.$authenticated = this.authService.$authenticated.subscribe(authenticated => {
-      this.isAuthenticated = authenticated;
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.$authenticated) {
-      this.$authenticated.unsubscribe();
-    }
-  }
 
   onLogout() {
     this.onClose();

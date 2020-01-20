@@ -3,11 +3,13 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsModule } from '@ngxs/store';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './auth/providers/auth.service';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { StopTrainingComponent } from './training/current-training/stop-training.component';
@@ -27,6 +29,8 @@ import { StopTrainingComponent } from './training/current-training/stop-training
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    NgxsModule.forRoot([]),
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
