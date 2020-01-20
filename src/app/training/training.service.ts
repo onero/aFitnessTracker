@@ -8,7 +8,7 @@ import { Exercise } from './exercise.model';
   providedIn: 'root'
 })
 export class TrainingService {
-  private readonly EXERCISE_COLLECTION = 'availableExercises';
+  private readonly AVAILABLE_EXERCISE_COLLECTION = 'availableExercises';
   private readonly FINISHED_EXERCISES = 'finishedExercises';
 
   private runningExercise: Exercise;
@@ -17,8 +17,8 @@ export class TrainingService {
 
   constructor(private afs: AngularFirestore) { }
 
-  getExercises(): Observable<Exercise[]> {
-    return this.afs.collection<Exercise>(this.EXERCISE_COLLECTION)
+  getAvailableExercises(): Observable<Exercise[]> {
+    return this.afs.collection<Exercise>(this.AVAILABLE_EXERCISE_COLLECTION)
       .snapshotChanges()
       .pipe(
         map(documentChangeActions => {
@@ -30,7 +30,7 @@ export class TrainingService {
   }
 
   startExercise(selectedId: string) {
-    this.afs.collection<Exercise>(this.EXERCISE_COLLECTION).doc(selectedId)
+    this.afs.collection<Exercise>(this.AVAILABLE_EXERCISE_COLLECTION).doc(selectedId)
       .get()
       .pipe(
         map(document => {
@@ -68,7 +68,7 @@ export class TrainingService {
     this.exerciseChanged$.next(null);
   }
 
-  getCompletedExercises(): Observable<Exercise[]> {
+  getFinishedExercises(): Observable<Exercise[]> {
     return this.afs.collection<Exercise>(this.FINISHED_EXERCISES)
       .snapshotChanges()
       .pipe(

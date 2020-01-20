@@ -26,13 +26,31 @@ export class TrainingState implements NgxsOnInit {
         return state.availableExercises;
     }
 
+    @Selector()
+    static finishedExercises(state: TrainingStateModel): Exercise[] {
+        return state.finishedExercises;
+    }
+
     @Action(TrainingAction.LoadAvailable)
     loadAvailableExercises({ patchState }: StateContext<TrainingStateModel>) {
-        return this.trainingService.getExercises()
+        return this.trainingService.getAvailableExercises()
             .pipe(
-                map(availableExercises => {
+                map(exercises => {
                     patchState({
-                        availableExercises: [...availableExercises]
+                        availableExercises: [...exercises]
+                    });
+                }),
+                takeUntil(this.actions$.pipe(ofAction(AuthAction.Logout)))
+            );
+    }
+
+    @Action(TrainingAction.LoadFinished)
+    loadFinishedExercises({ patchState }: StateContext<TrainingStateModel>) {
+        return this.trainingService.getFinishedExercises()
+            .pipe(
+                map(exercises => {
+                    patchState({
+                        finishedExercises: [...exercises]
                     });
                 }),
                 takeUntil(this.actions$.pipe(ofAction(AuthAction.Logout)))
@@ -40,6 +58,6 @@ export class TrainingState implements NgxsOnInit {
     }
 
     ngxsOnInit({ dispatch }: StateContext<TrainingStateModel>) {
-        dispatch(TrainingAction.LoadAvailable);
+        dispatch([TrainingAction.LoadAvailable, TrainingAction.LoadFinished]);
     }
 }
