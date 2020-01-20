@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from 'src/app/auth/providers/auth.service';
+import { Store } from '@ngxs/store';
+import { AuthAction } from 'src/app/auth/state/auth.actions';
 
 @Component({
   selector: 'aft-signup',
@@ -10,7 +11,7 @@ import { AuthService } from 'src/app/auth/providers/auth.service';
 export class SignupComponent implements OnInit {
   latestSignupDateAllowed: Date;
 
-  constructor(private authService: AuthService) { }
+  constructor(private store: Store) { }
 
   ngOnInit() {
     this.latestSignupDateAllowed = new Date();
@@ -18,10 +19,12 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    this.authService.registerUser({
-      email: form.value.email,
-      password: form.value.password
-    });
+    this.store.dispatch(new AuthAction.Register(
+      {
+        email: form.value.email,
+        password: form.value.password
+      }
+    ));
   }
 
 }

@@ -10,4 +10,9 @@ export namespace AuthAction {
     export class Logout {
         static readonly type = '[Auth] Logout';
     }
+
+    export class Register {
+        static readonly type = '[Auth] Register';
+        constructor(public authData: AuthData) { }
+    }
 }

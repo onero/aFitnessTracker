@@ -29,6 +29,20 @@ export class AuthState implements NgxsOnInit {
         return state.isAuthenticated;
     }
 
+    @Action(AuthAction.Register)
+    register(context: StateContext<AuthStateModel>, action: AuthAction.Register) {
+        this.afAuth.auth.createUserWithEmailAndPassword(action.authData.email, action.authData.password)
+            .then(() => {
+                context.setState({
+                    isAuthenticated: true
+                });
+                this.router.navigateByUrl(AppRoutes.TRAINING);
+            })
+            .catch(error => {
+                this.uiService.openErrorPopup(error.message);
+            });
+    }
+
     @Action(AuthAction.Login)
     login(context: StateContext<AuthStateModel>, action: AuthAction.Login) {
         this.trainingService.cancelSubscriptions();
@@ -58,8 +72,6 @@ export class AuthState implements NgxsOnInit {
     ngxsOnInit(context: StateContext<AuthStateModel>) {
         this.afAuth.authState.subscribe(user => {
             if (user) {
-                console.log('Already logged in, redirecting!');
-
                 context.setState({
                     isAuthenticated: true
                 });
