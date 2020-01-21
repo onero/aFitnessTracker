@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { Exercise } from './exercise.model';
 
 @Injectable({
@@ -10,10 +10,6 @@ import { Exercise } from './exercise.model';
 export class TrainingService {
   private readonly AVAILABLE_EXERCISE_COLLECTION = 'availableExercises';
   private readonly FINISHED_EXERCISES = 'finishedExercises';
-
-  private runningExercise: Exercise;
-
-  exerciseChanged$ = new Subject<Exercise>();
 
   constructor(private afs: AngularFirestore) { }
 
@@ -29,21 +25,16 @@ export class TrainingService {
       );
   }
 
-  startExercise(selectedId: string) {
-    this.afs.collection<Exercise>(this.AVAILABLE_EXERCISE_COLLECTION).doc(selectedId)
+  findExerciseById(selectedId: string) {
+    return this.afs.collection<Exercise>(this.AVAILABLE_EXERCISE_COLLECTION)
+      .doc(selectedId)
       .get()
+      .pipe(first())
       .pipe(
         map(document => {
           return this.convertDocumentToExercise(document);
         })
-      )
-      .pipe(
-        map(exercise => {
-          this.runningExercise = exercise;
-          this.exerciseChanged$.next({ ...this.runningExercise });
-        })
-      )
-      .subscribe();
+      );
   }
 
   private convertDocumentToExercise(document: firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>): Exercise {
@@ -58,14 +49,12 @@ export class TrainingService {
     return exerciseFromDb;
   }
 
-  completeExercise() {
-    this.addExercise({
-      ...this.runningExercise,
+  completeExercise(currentExercise: Exercise) {
+    return this.addExercise({
+      ...currentExercise,
       date: new Date(),
       state: 'completed'
     });
-    this.runningExercise = null;
-    this.exerciseChanged$.next(null);
   }
 
   getFinishedExercises(): Observable<Exercise[]> {
@@ -80,23 +69,18 @@ export class TrainingService {
       );
   }
 
-  cancelExercise(progress: number) {
-    this.addExercise({
-      ...this.runningExercise,
-      duration: this.runningExercise.duration * (progress / 100),
-      calories: this.runningExercise.calories * (progress / 100),
+  cancelExercise(exercise: Exercise, progress: number) {
+    return this.addExercise({
+      ...exercise,
+      duration: exercise.duration * (progress / 100),
+      calories: exercise.calories * (progress / 100),
       date: new Date(),
       state: 'cancelled'
     });
-    this.runningExercise = null;
-    this.exerciseChanged$.next(null);
   }
 
   private addExercise(exercise: Exercise) {
-    this.afs.collection(this.FINISHED_EXERCISES).add(exercise);
+    return this.afs.collection(this.FINISHED_EXERCISES).add(exercise);
   }
 
-  getRunningExercise() {
-    return { ...this.runningExercise };
-  }
 }

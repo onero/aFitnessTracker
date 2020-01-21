@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
@@ -15,8 +15,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 export class StopTrainingComponent {
     progress: number;
 
-    constructor(@Inject(MAT_DIALOG_DATA) private passedDate: any) {
-        this.progress = passedDate.progress;
+    constructor(@Inject(MAT_DIALOG_DATA) private passedData: any, private cd: ChangeDetectorRef) {
+        this.progress = passedData.data.progress;
     }
-
 }
