@@ -4,6 +4,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsModule } from '@ngxs/store';
 import { AuthState } from 'src/app/auth/state/auth.state';
 import { environment } from 'src/environments/environment';
@@ -32,7 +33,8 @@ import { StopTrainingComponent } from './training/current-training/stop-training
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     NgxsModule.forRoot([AuthState], ngxsConfig),
-    NgxsReduxDevtoolsPluginModule.forRoot()
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot()
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
