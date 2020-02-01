@@ -1,6 +1,6 @@
 // tslint:disable-next-line: no-namespace
 export namespace TrainingAction {
-  const TRAINING_ACTION = '[Shopping]';
+  const TRAINING_ACTION = '[Training]';
 
   export class LoadAvailable {
     static readonly type = `${TRAINING_ACTION} Load Available`;
